@@ -1,0 +1,40 @@
+ThisBuild / tlBaseVersion := "0.0"
+
+ThisBuild / organization     := "org.typelevel"
+ThisBuild / organizationName := "Typelevel"
+ThisBuild / startYear        := Some(2022)
+ThisBuild / licenses         := Seq(License.Apache2)
+ThisBuild / developers := List(
+  tlGitHubDev("DavidGregory084", "David Gregory")
+)
+
+ThisBuild / tlSonatypeUseLegacyHost := false
+
+val Scala212 = "2.12.16"
+val Scala213 = "2.13.8"
+val Scala3   = "3.1.3"
+
+ThisBuild / scalaVersion := Scala212 // The default while sbt is still based on Scala 2.12.x
+
+ThisBuild / crossScalaVersions := Seq(
+  Scala212,
+  Scala213,
+  Scala3
+) // There's no reason not to cross-publish
+
+lazy val root = tlCrossRootProject.aggregate(lib)
+
+lazy val munitVersion      = "0.7.29"
+lazy val scalacheckVersion = "1.16.0"
+
+lazy val lib = crossProject(JVMPlatform, JSPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("lib"))
+  .settings(
+    name := "scalac-options",
+    libraryDependencies ++= Seq(
+      "org.scalameta"  %%% "munit"            % munitVersion      % Test,
+      "org.scalacheck" %%% "scalacheck"       % scalacheckVersion % Test,
+      "org.scalameta"  %%% "munit-scalacheck" % munitVersion      % Test
+    )
+  )
