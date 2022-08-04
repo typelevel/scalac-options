@@ -19,7 +19,7 @@ package org.typelevel.scalacoptions
 import scala.Ordering.Implicits._
 import scala.collection.immutable.ListSet
 
-private[scalacoptions] trait ScalacOptions {
+object ScalacOptions {
   import ScalaVersion._
 
   /** Provide another option that is not declared by the ScalacOptions DSL.
