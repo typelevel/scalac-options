@@ -18,4 +18,6 @@ and this project adheres to [Early Semantic Versioning](https://docs.scala-lang.
 - Begin keeping this [CHANGELOG](./CHANGELOG.md).
 - Initial release of this library using code extracted from [sbt-tpolecat](https://github.com/typelevel/sbt-tpolecat).
 
+[Unreleased]: https://github.com/typelevel/scalac-options/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/typelevel/scalac-options/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/typelevel/scalac-options/releases/tag/v0.1.0
