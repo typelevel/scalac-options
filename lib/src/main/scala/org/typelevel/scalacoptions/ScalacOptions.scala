@@ -19,6 +19,8 @@ package org.typelevel.scalacoptions
 import scala.Ordering.Implicits._
 import scala.collection.immutable.ListSet
 
+object ScalacOptions extends ScalacOptions
+
 private[scalacoptions] trait ScalacOptions {
   import ScalaVersion._
 
