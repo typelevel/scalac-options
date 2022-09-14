@@ -1,3 +1,5 @@
+name := "scalac-options-root"
+
 ThisBuild / tlBaseVersion := "0.1"
 
 ThisBuild / organization     := "org.typelevel"
