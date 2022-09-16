@@ -48,10 +48,7 @@ private[scalacoptions] trait ScalacOptions {
 
   /** Emit warning and location for usages of deprecated APIs.
     */
-  val deprecation = ScalacOption(
-    "-deprecation",
-    version => version < V2_13_0 || version >= V3_0_0
-  )
+  val deprecation = ScalacOption("-deprecation", _ => true)
 
   /** Emit warning and location for usages of features that should be imported explicitly.
     */
@@ -246,7 +243,7 @@ private[scalacoptions] trait ScalacOptions {
   /** Enable linted deprecations.
     */
   val lintDeprecation =
-    lintOption("deprecation", version => version.isBetween(V2_13_0, V3_0_0))
+    lintOption("deprecation", version => version.isBetween(V2_12_13, V3_0_0))
 
   /** Warn when a Scaladoc comment appears to be detached from its element.
     */
