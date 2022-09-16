@@ -26,6 +26,7 @@ ThisBuild / crossScalaVersions := Seq(
 
 lazy val root = tlCrossRootProject.aggregate(lib)
 
+lazy val literallyVersion  = "1.1.0"
 lazy val munitVersion      = "0.7.29"
 lazy val scalacheckVersion = "1.17.0"
 
@@ -41,8 +42,13 @@ lazy val lib = crossProject(JVMPlatform, JSPlatform)
         scalacOptions.value
     },
     libraryDependencies ++= Seq(
+      "org.typelevel"  %%% "literally"        % literallyVersion,
       "org.scalameta"  %%% "munit"            % munitVersion      % Test,
       "org.scalacheck" %%% "scalacheck"       % scalacheckVersion % Test,
       "org.scalameta"  %%% "munit-scalacheck" % munitVersion      % Test
-    )
+    ) ++ {
+      if (tlIsScala3.value) Nil
+      else
+        List("org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided)
+    }
   )
