@@ -16,203 +16,92 @@
 
 package org.typelevel.scalacoptions
 
+import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
 import org.scalacheck.Prop.forAll
+import org.typelevel.scalacoptions.testkit._
 
 import scala.Ordering.Implicits._
 
-class ScalacOptionSuite extends munit.ScalaCheckSuite {
-  val versionGen = Gen.chooseNum(0L, 20L)
+class ScalacOptionSuite extends munit.ScalaCheckSuite with internal.ScalaCollectionCompat {
+
+  private val optionNameGen = Arbitrary.arbitrary[String]
+  private val versionsPairGen = {
+    // Make sure there will be at least one older version available.
+    val secondVersion = ScalaVersion.knownVersions.tail.head // we know for sure it is there
+    for {
+      newerVersion <- Gen.oneOf(ScalaVersion.knownVersions.rangeFrom(secondVersion))
+      olderVersion <- Gen.oneOf(ScalaVersion.knownVersions.rangeUntil(newerVersion))
+    } yield (olderVersion, newerVersion)
+  }
 
   property("valid when no version predicate") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", _ => true)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when neither addedIn nor removedIn"
-        )
+    forAll { (optionName: String, currentVersion: ScalaVersion) =>
+      val scalacOption = ScalacOption(optionName, _ => true)
+      assert(
+        scalacOption.isSupported(currentVersion),
+        "Should be valid when neither addedIn nor removedIn"
+      )
     }
   }
 
-  property("valid when added in past major release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj - 1, 0, 0)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when addedIn matches past major release"
-        )
-    }
-  }
-
-  property("valid when added in past minor release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj, currentMin - 1, 0)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when addedIn matches past minor release"
-        )
-    }
-  }
-
-  property("valid when added in past patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj, currentMin, currentPatch - 1)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when addedIn matches past patch release"
-        )
+  property("valid when added in a past release") {
+    forAll(optionNameGen, versionsPairGen) { case (optionName, (addedVersion, currentVersion)) =>
+      val scalacOption = ScalacOption(optionName, version => version >= addedVersion)
+      assert(
+        scalacOption.isSupported(currentVersion),
+        "Should be valid when addedIn matches past major release"
+      )
     }
   }
 
   property("valid when added in this minor/patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= currentVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when addedIn matches this minor/patch release"
-        )
+    forAll { (optionName: String, currentVersion: ScalaVersion) =>
+      val scalacOption = ScalacOption(optionName, version => version >= currentVersion)
+      assert(
+        scalacOption.isSupported(currentVersion),
+        "Should be valid when addedIn matches this minor/patch release"
+      )
     }
   }
 
-  property("not valid when added in a future major release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj + 1, currentMin, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when addedIn matches a future major release"
-        )
+  property("not valid when added in a future release") {
+    forAll(optionNameGen, versionsPairGen) { case (optionName, (currentVersion, addedVersion)) =>
+      val scalacOption = ScalacOption(optionName, version => version >= addedVersion)
+      assert(
+        !scalacOption.isSupported(currentVersion),
+        "Should not be valid when addedIn matches a future major release"
+      )
     }
   }
 
-  property("not valid when added in a future minor release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj, currentMin + 1, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when addedIn matches a future minor release"
-        )
+  property("valid when removed in a future release") {
+    forAll(optionNameGen, versionsPairGen) { case (optionName, (currentVersion, removedVersion)) =>
+      val scalacOption = ScalacOption(optionName, version => version < removedVersion)
+      assert(
+        scalacOption.isSupported(currentVersion),
+        "Should be valid when removedIn matches next major release"
+      )
     }
   }
 
-  property("not valid when added in a future patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val addedVersion   = ScalaVersion(currentMaj, currentMin, currentPatch + 1)
-        val scalacOption   = ScalacOption("-some-opt", version => version >= addedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when addedIn matches a future patch release"
-        )
+  property("not valid when removed in this release") {
+    forAll { (optionName: String, currentVersion: ScalaVersion) =>
+      val scalacOption = ScalacOption(optionName, version => version < currentVersion)
+      assert(
+        !scalacOption.isSupported(currentVersion),
+        "Should not be valid when removedIn matches this minor/patch release"
+      )
     }
   }
 
-  property("valid when removed in next major release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj + 1, 0, 0)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when removedIn matches next major release"
-        )
-    }
-  }
-
-  property("valid when removed in next minor release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj, currentMin + 1, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when removedIn matches next minor release"
-        )
-    }
-  }
-
-  property("valid when removed in next patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj, currentMin, currentPatch + 1)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          scalacOption.isSupported(currentVersion),
-          "Should be valid when removedIn matches next patch release"
-        )
-    }
-  }
-
-  property("not valid when removed in this minor/patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version < currentVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when removedIn matches this minor/patch release"
-        )
-    }
-  }
-
-  property("not valid when removed in an old major release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj - 1, currentMin, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when removedIn matches an old major release"
-        )
-    }
-  }
-
-  property("not valid when removed in an old minor release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj, currentMin - 1, currentPatch)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when removedIn matches an old minor release"
-        )
-    }
-  }
-
-  property("not valid when removed in an old patch release") {
-    forAll(versionGen, versionGen, versionGen) {
-      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
-        val currentVersion = ScalaVersion(currentMaj, currentMin, currentPatch)
-        val removedVersion = ScalaVersion(currentMaj, currentMin, currentPatch - 1)
-        val scalacOption   = ScalacOption("-some-opt", version => version < removedVersion)
-        assert(
-          !scalacOption.isSupported(currentVersion),
-          "Should not be valid when removedIn matches an old patch release"
-        )
+  property("not valid when removed in a past release") {
+    forAll(optionNameGen, versionsPairGen) { case (optionName, (removedVersion, currentVersion)) =>
+      val scalacOption = ScalacOption(optionName, version => version < removedVersion)
+      assert(
+        !scalacOption.isSupported(currentVersion),
+        "Should not be valid when removedIn matches an old major release"
+      )
     }
   }
 }

@@ -20,12 +20,13 @@ import scala.Ordering.Implicits._
 import scala.collection.immutable
 
 abstract sealed case class ScalaVersion private (major: Long, minor: Long, patch: Long) {
+
   def isBetween(addedVersion: ScalaVersion, removedVersion: ScalaVersion): Boolean =
     this >= addedVersion && this < removedVersion
 }
 
 object ScalaVersion {
-  def apply(major: Long, minor: Long, patch: Long): ScalaVersion =
+  private def apply(major: Long, minor: Long, patch: Long): ScalaVersion =
     new ScalaVersion(major, minor, patch) {}
 
   lazy val knownVersions: immutable.SortedSet[ScalaVersion] = {
@@ -45,6 +46,14 @@ object ScalaVersion {
     bld.result()
   }
 
+  def from(major: Long, minor: Long, patch: Long): Option[ScalaVersion] = {
+    val candidate = ScalaVersion(major, minor, patch)
+    if (knownVersions.contains(candidate)) Some(candidate) else None
+  }
+
+  def unsafeFrom(major: Long, minor: Long, patch: Long): ScalaVersion =
+    from(major, minor, patch).getOrElse(throw invalidScalaVersionError(s"$major.$minor.$patch"))
+
   val V2_11_0  = ScalaVersion(2, 11, 0)
   val V2_11_11 = ScalaVersion(2, 11, 11)
   val V2_12_0  = ScalaVersion(2, 12, 0)
@@ -60,6 +69,9 @@ object ScalaVersion {
   val V3_0_0   = ScalaVersion(3, 0, 0)
   val V3_1_0   = ScalaVersion(3, 1, 0)
 
-  implicit val scalaVersionOrdering: Ordering[ScalaVersion] =
+  implicit lazy val scalaVersionOrdering: Ordering[ScalaVersion] =
     Ordering.by(version => (version.major, version.minor, version.patch))
+
+  private def invalidScalaVersionError(s: String) =
+    new IllegalArgumentException(s"invalid Scala version: $s")
 }
