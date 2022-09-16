@@ -17,13 +17,34 @@
 package org.typelevel.scalacoptions
 
 import scala.Ordering.Implicits._
+import scala.collection.immutable
 
-case class ScalaVersion(major: Long, minor: Long, patch: Long) {
-  def isBetween(addedVersion: ScalaVersion, removedVersion: ScalaVersion) =
+abstract sealed case class ScalaVersion private (major: Long, minor: Long, patch: Long) {
+  def isBetween(addedVersion: ScalaVersion, removedVersion: ScalaVersion): Boolean =
     this >= addedVersion && this < removedVersion
 }
 
 object ScalaVersion {
+  def apply(major: Long, minor: Long, patch: Long): ScalaVersion =
+    new ScalaVersion(major, minor, patch) {}
+
+  lazy val knownVersions: immutable.SortedSet[ScalaVersion] = {
+    val bld = immutable.SortedSet.newBuilder[ScalaVersion]
+
+    def bldPatches(major: Long, minor: Long, lastPatch: Long): Unit =
+      for (patch <- 0L to lastPatch)
+        bld += ScalaVersion(major, minor, patch)
+
+    bldPatches(2, 11, 12)
+    bldPatches(2, 12, 17)
+    bldPatches(2, 13, 9)
+    bldPatches(3, 0, 2)
+    bldPatches(3, 1, 3)
+    bldPatches(3, 2, 0)
+
+    bld.result()
+  }
+
   val V2_11_0  = ScalaVersion(2, 11, 0)
   val V2_11_11 = ScalaVersion(2, 11, 11)
   val V2_12_0  = ScalaVersion(2, 12, 0)
