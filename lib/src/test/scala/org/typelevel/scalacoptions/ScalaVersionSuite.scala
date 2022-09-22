@@ -40,4 +40,15 @@ class ScalaVersionSuite extends munit.ScalaCheckSuite {
       }
     }
   }
+  property("ScalaVersion.fromString.apply/unsafe can create a known version") {
+    Prop.forAll(knownScalaVersionGen) { case expected @ ScalaVersion(major, minor, patch) =>
+      val s = s"$major.$minor.$patch"
+      assertEquals(ScalaVersion.fromString(s), Some(expected))
+      assertEquals(ScalaVersion.fromString.unsafe(s), expected)
+      s match {
+        case ScalaVersion.fromString(obtained) => assertEquals(obtained, expected)
+        case _                                 => fail("must not happen")
+      }
+    }
+  }
 }

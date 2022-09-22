@@ -16,6 +16,8 @@
 
 package org.typelevel.scalacoptions
 
+import org.typelevel.scalacoptions.internal.Parser
+
 import scala.Ordering.Implicits._
 import scala.collection.immutable
 
@@ -53,6 +55,14 @@ object ScalaVersion {
 
   def unsafeFrom(major: Long, minor: Long, patch: Long): ScalaVersion =
     from(major, minor, patch).getOrElse(throw invalidScalaVersionError(s"$major.$minor.$patch"))
+
+  object fromString {
+    def apply(s: String): Option[ScalaVersion] =
+      Parser.parseGenericVersion(s).flatMap(Function.tupled(from _))
+    def unapply(s: String): Option[ScalaVersion] = apply(s)
+
+    def unsafe(s: String): ScalaVersion = apply(s).getOrElse(throw invalidScalaVersionError(s))
+  }
 
   val V2_11_0  = ScalaVersion(2, 11, 0)
   val V2_11_11 = ScalaVersion(2, 11, 11)
