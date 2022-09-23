@@ -34,6 +34,12 @@ lazy val lib = crossProject(JVMPlatform, JSPlatform)
   .in(file("lib"))
   .settings(
     name := "scalac-options",
+    scalacOptions := {
+      if (tlIsScala3.value)
+        scalacOptions.value.filterNot(_ == "-source:3.0-migration") :+ "-source:3.1"
+      else
+        scalacOptions.value
+    },
     libraryDependencies ++= Seq(
       "org.scalameta"  %%% "munit"            % munitVersion      % Test,
       "org.scalacheck" %%% "scalacheck"       % scalacheckVersion % Test,
