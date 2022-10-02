@@ -21,7 +21,7 @@ import org.scalacheck.Gen
 import org.scalacheck.Prop
 
 class ParserSuite extends munit.ScalaCheckSuite {
-  property("Parser#parseGenericVersion should succeed for valid version strings") {
+  property("Parser.parseGenericVersion should succeed for valid version strings") {
     val ulongGen: Gen[Long] = Gen.chooseNum[Long](0L, Long.MaxValue)
     Prop.forAll(ulongGen, ulongGen, ulongGen) { (major, minor, patch) =>
       assertEquals(
@@ -30,7 +30,7 @@ class ParserSuite extends munit.ScalaCheckSuite {
       )
     }
   }
-  property("Parser#parseGenericVersion should None for invalid version strings") {
+  property("Parser.parseGenericVersion should None for invalid version strings") {
     val gen =
       Arbitrary
         .arbitrary[String]

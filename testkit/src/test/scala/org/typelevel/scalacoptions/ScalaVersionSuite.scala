@@ -20,13 +20,13 @@ import org.typelevel.scalacoptions.testkit._
 import org.scalacheck.Prop
 
 class ScalaVersionSuite extends munit.ScalaCheckSuite {
-  property("ScalaVersion#from/unsafeFrom can create a known version") {
+  property("ScalaVersion.from/unsafeFrom can create a known version") {
     Prop.forAll(knownScalaVersionGen) { case expected @ ScalaVersion(major, minor, patch) =>
       assertEquals(ScalaVersion.from(major, minor, patch), Some(expected))
       assertEquals(ScalaVersion.unsafeFrom(major, minor, patch), expected)
     }
   }
-  property("ScalaVersion#from/unsafeFrom are consistent with each other") {
+  property("ScalaVersion.from/unsafeFrom are consistent with each other") {
     Prop.forAll { (major: Long, minor: Long, patch: Long) =>
       ScalaVersion.from(major, minor, patch) match {
         case Some(expected) =>
