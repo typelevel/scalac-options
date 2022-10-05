@@ -12,7 +12,7 @@ ThisBuild / developers := List(
 
 ThisBuild / tlSonatypeUseLegacyHost := false
 
-val Scala212 = "2.12.16"
+val Scala212 = "2.12.17"
 val Scala213 = "2.13.8"
 val Scala3   = "3.1.3"
 
@@ -27,7 +27,7 @@ ThisBuild / crossScalaVersions := Seq(
 lazy val root = tlCrossRootProject.aggregate(lib)
 
 lazy val munitVersion      = "0.7.29"
-lazy val scalacheckVersion = "1.16.0"
+lazy val scalacheckVersion = "1.17.0"
 
 lazy val lib = crossProject(JVMPlatform, JSPlatform)
   .crossType(CrossType.Pure)
