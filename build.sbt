@@ -14,7 +14,7 @@ ThisBuild / tlSonatypeUseLegacyHost := false
 
 val Scala212 = "2.12.16"
 val Scala213 = "2.13.8"
-val Scala3   = "3.2.0"
+val Scala3   = "3.1.3"
 
 ThisBuild / scalaVersion := Scala212 // The default while sbt is still based on Scala 2.12.x
 
