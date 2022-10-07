@@ -2,6 +2,10 @@ name := "scalac-options-root"
 
 ThisBuild / tlBaseVersion := "0.1"
 
+// Mima validations against the prevous releases are intentionally disabled
+// since the current changes are not (yet) supposed to be binary-compatible.
+ThisBuild / tlMimaPreviousVersions := Set.empty
+
 ThisBuild / organization     := "org.typelevel"
 ThisBuild / organizationName := "Typelevel"
 ThisBuild / startYear        := Some(2022)
