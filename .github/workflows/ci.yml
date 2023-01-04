@@ -90,11 +90,11 @@ jobs:
 
       - name: Make target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: mkdir -p target .js/target .jvm/target .native/target lib/.js/target lib/.jvm/target project/target
+        run: mkdir -p target macros/.jvm/target testkit/.js/target .js/target core/.js/target macros/.js/target core/.jvm/target .jvm/target .native/target lib/.js/target testkit/.jvm/target lib/.jvm/target project/target
 
       - name: Compress target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-        run: tar cf targets.tar target .js/target .jvm/target .native/target lib/.js/target lib/.jvm/target project/target
+        run: tar cf targets.tar target macros/.jvm/target testkit/.js/target .js/target core/.js/target macros/.js/target core/.jvm/target .jvm/target .native/target lib/.js/target testkit/.jvm/target lib/.jvm/target project/target
 
       - name: Upload target directories
         if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
