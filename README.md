@@ -1,5 +1,10 @@
 # scalac-options
 
+[![Continuous Integration](https://github.com/typelevel/scalac-options/actions/workflows/ci.yml/badge.svg)](https://github.com/typelevel/scalac-options/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/typelevel/scalac-options.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Discord](https://img.shields.io/discord/632277896739946517.svg?label=&logo=discord&logoColor=ffffff&color=404244&labelColor=6A7EC2)](https://discord.gg/D7wY3aH7BQ)
+[![Maven Central](https://img.shields.io/maven-central/v/org.typelevel/scalac-options_3)](https://search.maven.org/artifact/org.typelevel/scalac-options_3)
+
 *scalac-options* is a library containing logic for configuring Scala compiler options according to the current Scala compiler version.
 
 This logic was originally developed in the [sbt-tpolecat](https://github.com/typelevel/sbt-tpolecat) sbt plugin, and this library is intended to enable the reuse of that logic in other build tool plugins, for example [sbt-typelevel](https://github.com/typelevel/sbt-typelevel) and [mill-tpolecat](https://github.com/DavidGregory084/mill-tpolecat).
