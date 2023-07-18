@@ -15,13 +15,13 @@ This library is published for Scala 2.12.x, 2.13.x and 3.1.x:
 
 ```scala
 // sbt
-"org.typelevel" %% "scalac-options" % "0.1.2"
+"org.typelevel" %% "scalac-options" % "0.1.3"
 
 // mill
-ivy"org.typelevel::scalac-options:0.1.2"
+ivy"org.typelevel::scalac-options:0.1.3"
 
 // Scala CLI
-//> using lib "org.typelevel::scalac-options:0.1.2"
+//> using lib "org.typelevel::scalac-options:0.1.3"
 ```
 
 This library offers functions for filtering proposed Scala compiler options according to Scala version:
