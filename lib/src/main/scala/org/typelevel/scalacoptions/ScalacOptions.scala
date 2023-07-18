@@ -606,6 +606,16 @@ private[scalacoptions] trait ScalacOptions {
       version => version.isBetween(V2_12_0, V2_13_0)
     )
 
+  /** Warn if a @nowarn annotation did not suppress at least one warning.
+    *
+    * Added in 2.13.2 as -Wunused:nowarn, backported to 2.12.13 as -Ywarn-unused:nowarn.
+    */
+  val privateWarnUnusedNoWarn =
+    privateWarnUnusedOption(
+      "nowarn",
+      version => version.isBetween(V2_12_13, V2_13_0)
+    )
+
   /** Private unused warning options (-Ywarn-unused:)
     */
   val privateWarnUnusedOptions: Set[ScalacOption] = ListSet(
@@ -614,7 +624,8 @@ private[scalacoptions] trait ScalacOptions {
     privateWarnUnusedLocals,
     privateWarnUnusedParams,
     privateWarnUnusedPatVars,
-    privateWarnUnusedPrivates
+    privateWarnUnusedPrivates,
+    privateWarnUnusedNoWarn
   )
 
   /** Private warning options (-Ywarn)
@@ -695,12 +706,12 @@ private[scalacoptions] trait ScalacOptions {
 
   /** Warn if a @nowarn annotation did not suppress at least one warning.
     *
-    * Added in 2.13.2, backported to 2.12.13.
+    * Added in 2.13.2, backported to 2.12.13 as -Ywarn-unused:nowarn.
     */
   val warnUnusedNoWarn =
     warnUnusedOption(
       "nowarn",
-      version => version.isBetween(V2_12_13, V2_13_0) || version.isBetween(V2_13_2, V3_0_0)
+      version => version.isBetween(V2_13_2, V3_0_0)
     )
 
   /** Warn if an implicit parameter is unused.
