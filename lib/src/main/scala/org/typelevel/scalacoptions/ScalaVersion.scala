@@ -42,6 +42,7 @@ object ScalaVersion {
   val V3_0_0   = ScalaVersion(3, 0, 0)
   val V3_1_0   = ScalaVersion(3, 1, 0)
   val V3_3_0   = ScalaVersion(3, 3, 0)
+  val V3_3_1   = ScalaVersion(3, 3, 1)
 
   implicit val scalaVersionOrdering: Ordering[ScalaVersion] =
     Ordering.by(version => (version.major, version.minor, version.patch))
