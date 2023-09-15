@@ -688,7 +688,7 @@ private[scalacoptions] trait ScalacOptions {
   val warnNonUnitStatement =
     warnOption(
       "nonunit-statement",
-      version => version.isBetween(V2_13_9, V3_0_0)
+      version => version.isBetween(V2_13_9, V3_0_0) || version.isAtLeast(V3_3_1)
     )
 
   /** Fail the compilation if there are any warnings.
