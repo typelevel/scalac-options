@@ -44,6 +44,17 @@ object ScalaVersion {
   val V3_3_0   = ScalaVersion(3, 3, 0)
   val V3_3_1   = ScalaVersion(3, 3, 1)
 
+  private val versionRegex = raw"""(\d+)\.(\d+)\.(\d+)(?:-.*)?""".r
+  def fromString(version: String): Either[IllegalArgumentException, ScalaVersion] =
+    version match {
+      case versionRegex(major, minor, patch) =>
+        Right(ScalaVersion(major.toLong, minor.toLong, patch.toLong))
+      case _ => Left(new IllegalArgumentException(s"Scala version $version not recognized"))
+    }
+
+  def unsafeFromString(version: String): ScalaVersion =
+    fromString(version).fold(throw _, identity)
+
   implicit val scalaVersionOrdering: Ordering[ScalaVersion] =
     Ordering.by(version => (version.major, version.minor, version.patch))
 }
