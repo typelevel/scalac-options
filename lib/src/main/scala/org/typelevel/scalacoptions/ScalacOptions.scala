@@ -117,6 +117,10 @@ private[scalacoptions] trait ScalacOptions {
     */
   val source31 = scala3Source("3.1", version => version >= V3_1_0)
 
+  /** Enforce the new `then` and `do` in control expressions introduced in Scala 3.x.
+    */
+  val newSyntax = ScalacOption("-new-syntax", List.empty, version => version >= V3_0_0)
+
   /** Enable or disable language features
     */
   def languageFeatureOption(
