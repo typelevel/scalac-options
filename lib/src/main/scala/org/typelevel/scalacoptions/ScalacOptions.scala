@@ -461,6 +461,12 @@ private[scalacoptions] trait ScalacOptions {
   val privateKindProjector =
     privateOption("kind-projector", version => version >= V3_0_0)
 
+  /** Enables safe initialization check. More info:
+    * [[https://docs.scala-lang.org/scala3/reference/other-new-features/safe-initialization.html]]
+    */
+  val privateSafeInit =
+    privateOption("safe-init", version => version >= V3_0_0)
+
   /** Enables support for higher order unification in type constructor inference.
     *
     * Initially provided as a compiler option in the 2.12.x series to fix the infamous
