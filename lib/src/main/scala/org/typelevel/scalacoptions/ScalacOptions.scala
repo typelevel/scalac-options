@@ -467,6 +467,11 @@ private[scalacoptions] trait ScalacOptions {
   val privateSafeInit =
     privateOption("safe-init", version => version >= V3_0_0)
 
+  /** Enables retain trees for top-level classes, accessible from ClassSymbol#tree
+    */
+  val privateRetainTrees =
+    privateOption("retain-trees", version => version >= V3_0_0)
+
   /** Enables support for higher order unification in type constructor inference.
     *
     * Initially provided as a compiler option in the 2.12.x series to fix the infamous
