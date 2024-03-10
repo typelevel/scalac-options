@@ -43,6 +43,8 @@ object ScalaVersion {
   val V3_1_0   = ScalaVersion(3, 1, 0)
   val V3_3_0   = ScalaVersion(3, 3, 0)
   val V3_3_1   = ScalaVersion(3, 3, 1)
+  val V3_3_3   = ScalaVersion(3, 3, 3)
+  val V3_4_0   = ScalaVersion(3, 4, 0)
 
   private val versionRegex = raw"""(\d+)\.(\d+)\.(\d+)(?:-.*)?""".r
   def fromString(version: String): Either[IllegalArgumentException, ScalaVersion] =
