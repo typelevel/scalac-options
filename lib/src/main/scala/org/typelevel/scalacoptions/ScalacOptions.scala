@@ -152,6 +152,11 @@ private[scalacoptions] trait ScalacOptions {
   val languageImplicitConversions =
     languageFeatureOption("implicitConversions")
 
+  /** Enables Multiversal Equality as opposed to Universal Equality.
+    */
+  val languageStrictEquality =
+    languageFeatureOption("strictEquality", version => version >= V3_0_0)
+
   /** Preferred language feature options.
     */
   val languageFeatureOptions: Set[ScalacOption] = ListSet(
