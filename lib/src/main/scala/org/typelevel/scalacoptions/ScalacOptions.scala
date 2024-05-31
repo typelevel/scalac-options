@@ -78,12 +78,11 @@ private[scalacoptions] trait ScalacOptions {
     * The release flag is supported only on JDK 9 and above, since it relies on the functionality
     * provided in [[http://openjdk.java.net/jeps/247 JEP-247: Compile for Older Platform Versions]].
     */
-  @deprecated("Use javaOutputVersion instead", "3.1.2")
   def release(version: String) =
     ScalacOption(
       "-release",
       List(version),
-      version => JavaMajorVersion.javaMajorVersion >= 9 && version >= V2_12_5
+      version => JavaMajorVersion.javaMajorVersion >= 9 && version >= V2_12_5 && version < V3_1_2
     )
 
   /** Enable features that will be available in a future version of Scala, for purposes of early
