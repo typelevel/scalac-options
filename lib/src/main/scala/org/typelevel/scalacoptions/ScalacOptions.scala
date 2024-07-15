@@ -440,7 +440,8 @@ private[scalacoptions] trait ScalacOptions {
   /** Advanced options (-X)
     */
   val advancedOptions: Set[ScalacOption] = ListSet(
-    lint
+    lint,
+    advancedKindProjector
   ) ++ lintOptions
 
   /** Private options (-Y)
@@ -468,7 +469,10 @@ private[scalacoptions] trait ScalacOptions {
     * syntax.
     */
   val privateKindProjector =
-    privateOption("kind-projector", version => version >= V3_0_0)
+    privateOption("kind-projector", version => version.isBetween(V3_0_0, V3_5_0))
+
+  val advancedKindProjector =
+    advancedOption("kind-projector", version => version >= V3_5_0)
 
   /** Enables safe initialization check. More info:
     * [[https://docs.scala-lang.org/scala3/reference/other-new-features/safe-initialization.html]]
