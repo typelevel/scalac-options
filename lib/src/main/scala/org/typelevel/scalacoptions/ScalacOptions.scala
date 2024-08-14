@@ -207,6 +207,11 @@ private[scalacoptions] trait ScalacOptions {
   val async =
     advancedOption("async", version => version.isBetween(V2_13_3, V3_0_0))
 
+  /** Maximal number of successive inlines. Default: 32.
+    */
+  def maxInlines(limit: Int) =
+    advancedOption("max-inlines", List(limit.toString), version => version >= V3_0_0)
+
   /** Enable recommended warnings.
     */
   def lintOption(
