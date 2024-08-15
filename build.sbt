@@ -26,8 +26,9 @@ ThisBuild / crossScalaVersions := Seq(
 
 lazy val root = tlCrossRootProject.aggregate(lib)
 
-lazy val munitVersion      = "1.0.1"
-lazy val scalacheckVersion = "1.18.0"
+lazy val munitVersion           = "1.0.1"
+lazy val scalacheckVersion      = "1.18.0"
+lazy val munitScalacheckVersion = "1.0.0"
 
 lazy val lib = crossProject(JVMPlatform, JSPlatform)
   .crossType(CrossType.Pure)
@@ -35,8 +36,8 @@ lazy val lib = crossProject(JVMPlatform, JSPlatform)
   .settings(
     name := "scalac-options",
     libraryDependencies ++= Seq(
-      "org.scalameta"  %%% "munit"            % munitVersion      % Test,
-      "org.scalacheck" %%% "scalacheck"       % scalacheckVersion % Test,
-      "org.scalameta"  %%% "munit-scalacheck" % munitVersion      % Test
+      "org.scalameta"  %%% "munit"            % munitVersion           % Test,
+      "org.scalacheck" %%% "scalacheck"       % scalacheckVersion      % Test,
+      "org.scalameta"  %%% "munit-scalacheck" % munitScalacheckVersion % Test
     )
   )
