@@ -212,6 +212,12 @@ private[scalacoptions] trait ScalacOptions {
   def maxInlines(limit: Int) =
     advancedOption("max-inlines", List(limit.toString), version => version >= V3_0_0)
 
+  /** Enables support for a subset of [[https://github.com/typelevel/kind-projector kind-projector]]
+    * syntax.
+    */
+  val advancedKindProjector =
+    advancedOption("kind-projector", version => version >= V3_5_0)
+
   /** Enable recommended warnings.
     */
   def lintOption(
@@ -475,9 +481,6 @@ private[scalacoptions] trait ScalacOptions {
     */
   val privateKindProjector =
     privateOption("kind-projector", version => version.isBetween(V3_0_0, V3_5_0))
-
-  val advancedKindProjector =
-    advancedOption("kind-projector", version => version >= V3_5_0)
 
   /** Enables safe initialization check. More info:
     * [[https://docs.scala-lang.org/scala3/reference/other-new-features/safe-initialization.html]]
