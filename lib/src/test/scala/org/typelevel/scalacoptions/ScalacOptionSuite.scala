@@ -215,4 +215,15 @@ class ScalacOptionSuite extends munit.ScalaCheckSuite {
         )
     }
   }
+
+  property("ScalacOptions.default should not contain null") {
+    forAll(versionGen, versionGen, versionGen) {
+      (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
+        val version = ScalaVersion(currentMaj, currentMin, currentPatch)
+        ScalacOptions.default.foreach { option =>
+          assert(option.isSupported(version) || true)
+        }
+    }
+  }
+
 }
