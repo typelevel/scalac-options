@@ -813,6 +813,12 @@ private[scalacoptions] trait ScalacOptions {
       version => version.isBetween(V2_13_0, V3_0_0) || version.isAtLeast(V3_3_0)
     )
 
+  /** Enables safe initialization check. More info:
+    * [[https://docs.scala-lang.org/scala3/reference/other-new-features/safe-initialization.html]]
+    */
+  val warnSafeInit =
+    warnOption("safe-init", version => version >= V3_5_0)
+
   /** Unused warning options (-Wunused:)
     */
   val warnUnusedOptions: Set[ScalacOption] = ListSet(
