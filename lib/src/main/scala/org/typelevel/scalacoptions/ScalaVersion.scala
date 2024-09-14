@@ -19,10 +19,14 @@ package org.typelevel.scalacoptions
 import scala.Ordering.Implicits._
 
 case class ScalaVersion(major: Long, minor: Long, patch: Long) {
-  def isBetween(addedVersion: ScalaVersion, removedVersion: ScalaVersion) =
+  def isBetween(addedVersion: ScalaVersion, removedVersion: ScalaVersion): Boolean =
     this >= addedVersion && this < removedVersion
 
-  def isAtLeast(addedVersion: ScalaVersion) = this >= addedVersion
+  def isAtLeast(addedVersion: ScalaVersion): Boolean =
+    this >= addedVersion
+
+  override def toString: String =
+    s"$major.$minor.$patch"
 }
 
 object ScalaVersion {
