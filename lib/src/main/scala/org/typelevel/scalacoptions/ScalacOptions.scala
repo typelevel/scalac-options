@@ -41,6 +41,9 @@ private[scalacoptions] trait ScalacOptions {
   ): ScalacOption =
     ScalacOption(option, args, isSupported)
 
+  /** Set the encoding to UTF-8 */
+  val encodingUTF8 = encoding("utf8")
+
   /** Specify character encoding used by source files.
     */
   def encoding(enc: String) =
@@ -59,6 +62,12 @@ private[scalacoptions] trait ScalacOptions {
     */
   val feature =
     ScalacOption("-feature", _ => true)
+
+  /** Turn on bracket-less style */
+  val indent = other("-indent", _ >= V3_0_0)
+
+  /** Turn off bracket-less style */
+  val noIndent = other("-no-indent", _ >= V3_0_0)
 
   /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
     *
@@ -156,6 +165,10 @@ private[scalacoptions] trait ScalacOptions {
     */
   val languageStrictEquality =
     languageFeatureOption("strictEquality", version => version >= V3_0_0)
+
+  /** Enable dynamics support. */
+  val languageDynamics =
+    languageFeatureOption("dynamics")
 
   /** Preferred language feature options.
     */
