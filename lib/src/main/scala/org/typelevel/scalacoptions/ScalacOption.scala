@@ -40,7 +40,7 @@ class ScalacOption(
       case _                  => false
     }
 
-  override def toString =
+  override def toString: String =
     (option :: args).mkString("ScalacOption(", " ", ")")
 }
 
