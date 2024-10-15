@@ -21,7 +21,7 @@ This library is published for Scala 2.12.x, 2.13.x and 3.1.x:
 ivy"org.typelevel::scalac-options:0.1.7"
 
 // Scala CLI
-//> using dep "org.typelevel::scalac-options:0.1.7"
+//> using dep org.typelevel::scalac-options:0.1.7
 ```
 
 This library offers functions for filtering proposed Scala compiler options according to Scala version:
