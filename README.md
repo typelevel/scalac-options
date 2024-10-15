@@ -15,13 +15,13 @@ This library is published for Scala 2.12.x, 2.13.x and 3.1.x:
 
 ```scala
 // sbt
-"org.typelevel" %% "scalac-options" % "0.1.3"
+"org.typelevel" %% "scalac-options" % "0.1.7"
 
 // mill
-ivy"org.typelevel::scalac-options:0.1.3"
+ivy"org.typelevel::scalac-options:0.1.7"
 
 // Scala CLI
-//> using lib "org.typelevel::scalac-options:0.1.3"
+//> using dep org.typelevel::scalac-options:0.1.7
 ```
 
 This library offers functions for filtering proposed Scala compiler options according to Scala version:
@@ -50,10 +50,54 @@ ScalacOptions.defaultOptionsForVersion(
 ) // returns a Set[ScalacOption] based on the default option set
 ```
 
-### Conduct
+The following are simple examples of use in sbt and Mill. Note that they are not complete project definitions.
+
+### sbt example
+
+Add the following dependency to an `sbt` file within the project directory, for instance `project/plugins`:
+
+```scala
+libraryDependencies += "org.typelevel" %% "scalac-options" % "0.1.7"
+```
+
+Alter your `build.sbt` file as follows:
+
+```scala
+// Types are not imported directly to avoid collisions with sbt's classes.
+import org.typelevel.scalacoptions
+
+val scala3Version = "3.3.3"
+
+project
+  .settings(
+    scalaVersion := scala3Version,
+    scalacOptions ++= scalacoptions.ScalacOptions.defaultTokensForVersion(
+      scalacoptions.ScalaVersion.unsafeFromString(scala3Version)
+    )
+  )
+```
+
+### Mill example
+
+```scala
+import $ivy.`org.typelevel::scalac-options:0.1.7`, org.typelevel.scalacoptions._
+
+object example extends ScalaModule {
+  def scalaVersion   = "3.3.3"
+
+  override def scalacOptions = T {
+    super.scalacOptions() ++
+      ScalacOptions.defaultTokensForVersion(
+        ScalaVersion.unsafeFromString(scalaVersion())
+      )
+  }
+}
+```
+
+## Conduct
 
 Participants are expected to follow the [Scala Code of Conduct](https://www.scala-lang.org/conduct/) while discussing the project on GitHub and any other venues associated with the project. See the [organizational Code of Conduct](https://github.com/typelevel/.github/blob/main/CODE_OF_CONDUCT.md) for more details.
 
-### License
+## License
 
 All code in this repository is licensed under the Apache License, Version 2.0. See [LICENSE](./LICENSE).
