@@ -10,7 +10,7 @@ ThisBuild / developers := List(
   tlGitHubDev("DavidGregory084", "David Gregory")
 )
 
-ThisBuild / tlSonatypeUseLegacyHost := false
+ThisBuild / sonatypeCredentialHost := xerial.sbt.Sonatype.sonatypeLegacy
 
 val Scala212 = "2.12.20"
 val Scala213 = "2.13.16"
