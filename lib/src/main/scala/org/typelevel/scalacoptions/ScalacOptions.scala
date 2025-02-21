@@ -493,6 +493,12 @@ private[scalacoptions] trait ScalacOptions {
   val privateRetainTrees =
     privateOption("retain-trees", version => version >= V3_0_0)
 
+  /** Enables explicit nulls that modifies the Scala type system, which makes reference types
+    * (anything that extends AnyRef) non-nullable.
+    */
+  val privateExplicitNulls =
+    privateOption("explicit-nulls", version => version >= V3_0_0)
+
   /** Enables support for higher order unification in type constructor inference.
     *
     * Initially provided as a compiler option in the 2.12.x series to fix the infamous
