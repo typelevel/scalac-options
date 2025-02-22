@@ -825,6 +825,15 @@ private[scalacoptions] trait ScalacOptions {
   val warnSafeInit =
     warnOption("safe-init", version => version >= V3_5_0)
 
+  /** Warn if comparison with a pattern value looks like it might always fail.
+    *
+    * [[https://github.com/scala/scala3/pull/18093]]
+    *
+    * Added in 3.4.0.
+    */
+  val warnImplausiblePatterns =
+    warnOption("implausible-patterns", version => version >= V3_4_0)
+
   /** Unused warning options (-Wunused:)
     */
   val warnUnusedOptions: Set[ScalacOption] = ListSet(
