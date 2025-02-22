@@ -82,7 +82,7 @@ private[scalacoptions] trait ScalacOptions {
     ScalacOption(
       "-release",
       List(version),
-      version => JavaMajorVersion.javaMajorVersion >= 9 && version.isBetween(V2_12_5, V3_1_2)
+      version => JavaMajorVersion.javaMajorVersion >= 9 && version >= V2_12_5
     )
 
   /** Enable features that will be available in a future version of Scala, for purposes of early
