@@ -62,6 +62,19 @@ private[scalacoptions] trait ScalacOptions {
 
   /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
     *
+    * The java-output-version flag is supported only on JDK 9 and above, since it relies on the
+    * functionality provided in
+    * [[http://openjdk.java.net/jeps/247 JEP-247: Compile for Older Platform Versions]].
+    */
+  def javaOutputVersion(version: String) =
+    ScalacOption(
+      "-java-output-version",
+      List(version),
+      version => JavaMajorVersion.javaMajorVersion >= 9 && version >= V3_1_2
+    )
+
+  /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
+    *
     * The release flag is supported only on JDK 9 and above, since it relies on the functionality
     * provided in [[http://openjdk.java.net/jeps/247 JEP-247: Compile for Older Platform Versions]].
     */
