@@ -62,6 +62,19 @@ private[scalacoptions] trait ScalacOptions {
 
   /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
     *
+    * The java-output-version flag is supported only on JDK 9 and above, since it relies on the
+    * functionality provided in
+    * [[http://openjdk.java.net/jeps/247 JEP-247: Compile for Older Platform Versions]].
+    */
+  def javaOutputVersion(version: String) =
+    ScalacOption(
+      "-java-output-version",
+      List(version),
+      version => JavaMajorVersion.javaMajorVersion >= 9 && version >= V3_1_2
+    )
+
+  /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
+    *
     * The release flag is supported only on JDK 9 and above, since it relies on the functionality
     * provided in [[http://openjdk.java.net/jeps/247 JEP-247: Compile for Older Platform Versions]].
     */
@@ -833,6 +846,16 @@ private[scalacoptions] trait ScalacOptions {
     */
   val warnImplausiblePatterns =
     warnOption("implausible-patterns", version => version >= V3_4_0)
+
+  /** Enables all warnings. More info:
+    *
+    * [[https://github.com/scala/scala3/pull/20577]]
+    *
+    * Added in 3.5.2, back ported to 3.3.5
+    */
+  val warnAll =
+    warnOption("all", version => version.isAtLeast(V3_5_2) || version.isBetween(V3_3_5, V3_4_0))
+
 
   /** Unused warning options (-Wunused:)
     */
