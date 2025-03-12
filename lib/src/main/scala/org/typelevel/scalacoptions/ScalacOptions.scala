@@ -856,7 +856,6 @@ private[scalacoptions] trait ScalacOptions {
   val warnAll =
     warnOption("all", version => version.isAtLeast(V3_5_2) || version.isBetween(V3_3_5, V3_4_0))
 
-
   /** Unused warning options (-Wunused:)
     */
   val warnUnusedOptions: Set[ScalacOption] = ListSet(
