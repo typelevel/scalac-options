@@ -838,6 +838,15 @@ private[scalacoptions] trait ScalacOptions {
   val warnSafeInit =
     warnOption("safe-init", version => version >= V3_5_0)
 
+  /** Enables all warnings. More info:
+    *
+    * [[https://github.com/scala/scala3/pull/20577]]
+    *
+    * Added in 3.5.2, back ported to 3.3.5
+    */
+  val warnAll =
+    warnOption("all", version => version.isAtLeast(V3_5_2) || version.isBetween(V3_3_5, V3_4_0))
+
   /** Unused warning options (-Wunused:)
     */
   val warnUnusedOptions: Set[ScalacOption] = ListSet(
