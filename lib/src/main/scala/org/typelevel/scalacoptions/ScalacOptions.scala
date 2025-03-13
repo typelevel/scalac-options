@@ -60,6 +60,12 @@ private[scalacoptions] trait ScalacOptions {
   val feature =
     ScalacOption("-feature", _ => true)
 
+  /** Turn on bracket-less style */
+  val indent = other("-indent", _ >= V3_0_0)
+
+  /** Turn off bracket-less style */
+  val noIndent = other("-no-indent", _ >= V3_0_0)
+
   /** Compile for a specific version of the Java platform. Supported targets: 8, 9, ..., 17, 18.
     *
     * The java-output-version flag is supported only on JDK 9 and above, since it relies on the
