@@ -26,7 +26,7 @@ lazy val root = tlCrossRootProject.aggregate(lib)
 
 lazy val munitVersion           = "1.1.1"
 lazy val scalacheckVersion      = "1.19.0"
-lazy val munitScalacheckVersion = "1.1.0"
+lazy val munitScalacheckVersion = "1.2.0"
 
 lazy val lib = crossProject(JVMPlatform, JSPlatform)
   .crossType(CrossType.Pure)
