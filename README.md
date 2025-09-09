@@ -66,7 +66,7 @@ Alter your `build.sbt` file as follows:
 // Types are not imported directly to avoid collisions with sbt's classes.
 import org.typelevel.scalacoptions
 
-val scala3Version = "3.3.5"
+val scala3Version = "3.3.6"
 
 project
   .settings(
@@ -79,11 +79,31 @@ project
 
 ### Mill example
 
+If you are using mill 1.x:
+
+```scala
+//| mvnDeps: ["org.typelevel::scalac-options:0.1.8"]
+import org.typelevel.scalacoptions.*
+
+object example extends ScalaModule {
+  def scalaVersion   = "3.3.6"
+
+  override def scalacOptions = Task {
+    super.scalacOptions() ++
+      ScalacOptions.defaultTokensForVersion(
+        ScalaVersion.unsafeFromString(scalaVersion())
+      )
+  }
+}
+```
+
+If you are using mill 0.x:
+
 ```scala
 import $ivy.`org.typelevel::scalac-options:0.1.8`, org.typelevel.scalacoptions._
 
 object example extends ScalaModule {
-  def scalaVersion   = "3.3.5"
+  def scalaVersion   = "3.3.6"
 
   override def scalacOptions = T {
     super.scalacOptions() ++
