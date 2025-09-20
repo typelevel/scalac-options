@@ -31,6 +31,13 @@ class ScalacOption(
   val args: List[String],
   val isSupported: ScalaVersion => Boolean
 ) {
+
+  /** Return this `ScalacOption` as a `Seq[String]`, useful for directly setting values with your
+    * preferred build tool.
+    */
+  def toSeq: Seq[String] =
+    (option :: args).toSeq
+
   override def hashCode(): Int =
     41 * option.hashCode
 
@@ -41,7 +48,7 @@ class ScalacOption(
     }
 
   override def toString: String =
-    (option :: args).mkString("ScalacOption(", " ", ")")
+    toSeq.mkString("ScalacOption(", " ", ")")
 }
 
 object ScalacOption {
