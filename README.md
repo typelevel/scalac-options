@@ -52,6 +52,17 @@ ScalacOptions.defaultOptionsForVersion(
 
 The following are simple examples of use in sbt and Mill. Note that they are not complete project definitions.
 
+### Modifying options: Fatal warnings example
+
+A common requirement is use a modified version of the default settings. In this example, we are going to enable fatal warnings.
+
+```scala
+ScalacOptions.tokensForVersion(
+  ScalaVersion.V3_1_0,
+  ScalacOptions.default ++ ScalacOptions.fatalWarningOptions
+)
+```
+
 ### sbt example
 
 Add the following dependency to an `sbt` file within the project directory, for instance `project/plugins`:
