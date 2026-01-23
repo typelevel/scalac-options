@@ -211,10 +211,15 @@ private[scalacoptions] trait ScalacOptions {
   val checkInit =
     advancedOption("checkinit", version => version < V3_0_0)
 
-  /** Fail the compilation if there are any warnings.
+  /** Fail the compilation if there are any warnings for Scala 2.12.
+    */
+  val fatalWarnings212 =
+    advancedOption("fatal-warnings", version => version.isBetween(V2_12_0, V2_13_0))
+
+  /** Fail the compilation if there are any warnings for Scala 2.13+.
     */
   val fatalWarnings =
-    advancedOption("fatal-warnings", version => version < V3_8_0)
+    warnOption("error", version => version.isAtLeast(V2_13_0))
 
   /** Enable recommended warnings.
     */
@@ -751,7 +756,7 @@ private[scalacoptions] trait ScalacOptions {
   /** Fail the compilation if there are any warnings.
     */
   val warnError =
-    warnOption("error", version => version.isBetween(V2_13_0, V3_0_0) || version >= V3_8_0)
+    warnOption("error", version => version.isAtLeast(V2_13_0))
 
   /** Unused warning options (-Wunused:)
     */
@@ -888,7 +893,7 @@ private[scalacoptions] trait ScalacOptions {
   /** Options which fail the compilation if there are any warnings.
     */
   val fatalWarningOptions: Set[ScalacOption] = ListSet(
-    fatalWarnings,
+    fatalWarnings212,
     warnError
   )
 
