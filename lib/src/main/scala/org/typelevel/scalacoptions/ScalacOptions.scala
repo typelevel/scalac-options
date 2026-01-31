@@ -214,7 +214,10 @@ private[scalacoptions] trait ScalacOptions {
   /** Fail the compilation if there are any warnings.
     */
   val fatalWarnings =
-    advancedOption("fatal-warnings")
+    advancedOption(
+      "fatal-warnings",
+      version => version < V2_13_0 || version.isBetween(V3_0_0, V3_0_2)
+    )
 
   /** Enable recommended warnings.
     */
@@ -751,7 +754,10 @@ private[scalacoptions] trait ScalacOptions {
   /** Fail the compilation if there are any warnings.
     */
   val warnError =
-    warnOption("error", version => version.isBetween(V2_13_0, V3_0_0))
+    warnOption(
+      "error",
+      version => version.isBetween(V2_13_0, V3_0_0) || version.isAtLeast(V3_0_2)
+    )
 
   /** Unused warning options (-Wunused:)
     */
