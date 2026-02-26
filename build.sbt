@@ -24,7 +24,7 @@ ThisBuild / crossScalaVersions := Seq(
 
 lazy val root = tlCrossRootProject.aggregate(lib)
 
-lazy val munitVersion           = "1.2.2"
+lazy val munitVersion           = "1.2.3"
 lazy val scalacheckVersion      = "1.19.0"
 lazy val munitScalacheckVersion = "1.2.0"
 
