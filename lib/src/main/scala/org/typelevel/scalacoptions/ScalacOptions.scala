@@ -993,6 +993,58 @@ private[scalacoptions] trait ScalacOptions {
       optimizerInlineFrom(inlineFromPackages: _*)
     )
 
+  /** Enable non-inlining optimizations
+    *
+    * Added in 3.8.3
+    */
+  val opt = ScalacOption("-opt", _.isAtLeast(V3_8_3))
+
+  /** Enable inlining optimizations
+    *
+    * Inlining requires a list of patterns defining where code can be inlined from
+    *
+    * @param patterns
+    *   A list of patterns defining where code can be inlined from
+    *
+    * Added in 3.8.3
+    */
+
+  def optInline(patterns: String*) =
+    ScalacOption(s"-opt-inline:${patterns.mkString(",")}", _.isAtLeast(V3_8_3))
+
+  /** @param heuristics
+    *   Set the heuristics for inlining decisions
+    *   - "at-inline-annotated"
+    *   - "everything"
+    *   - "default"
+    *
+    * Added in 3.8.3
+    */
+  def optInlineHeuristics(heuristics: String) =
+    privateOption(s"opt-inline-heuristics:$heuristics", _.isAtLeast(V3_8_3))
+
+  /** Enable optimizer warnings
+    *
+    * @param warnOption
+    *   - "all" Enable all optimizer warnings
+    *   - "at-inline-failed-summary" One-line summary if there were @inline method calls that could
+    *     not be inlined
+    *   - "at-inline-failed" A detailed warning for each @inline method call that could not be
+    *     inlined
+    *   - "any-inline-failed" A detailed warning for every callsite that was chosen for inlining by
+    *     the heuristics, but could not be inlined
+    *   - "no-inline-mixed" In mixed compilation, warn at callsites methods defined in java sources
+    *     (the inlining decision cannot be made without bytecode)
+    *   - "no-inline-missing-bytecode" Warn if an inlining decision cannot be made because a the
+    *     bytecode of a class or member cannot be found on the compilation classpath
+    *   - "no-inline-missing-attribute" Warn if an inlining decision cannot be made because a Scala
+    *     classfile does not have a ScalaInlineInfo attribute
+    *
+    * Added in 3.8.3
+    */
+  def optWarn(warnOption: String) =
+    ScalacOption(s"-Wopt:$warnOption", _.isAtLeast(V3_8_3))
+
   /** Default options to exclude in console tasks
     */
   val defaultConsoleExclude: Set[ScalacOption] = privateWarnUnusedOptions ++
