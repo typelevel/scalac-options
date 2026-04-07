@@ -521,6 +521,11 @@ private[scalacoptions] trait ScalacOptions {
   val privateExplicitNulls =
     privateOption("explicit-nulls", version => version >= V3_0_0)
 
+  /** Check exhaustivity and redundancy of all pattern matching (not only sealed traits/classes).
+    */
+  val privateCheckAllPatmat =
+    privateOption("check-all-patmat", version => version >= V3_0_2)
+
   /** Enables support for higher order unification in type constructor inference.
     *
     * Initially provided as a compiler option in the 2.12.x series to fix the infamous
