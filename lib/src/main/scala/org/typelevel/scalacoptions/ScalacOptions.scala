@@ -712,6 +712,7 @@ private[scalacoptions] trait ScalacOptions {
   val privateOptions: Set[ScalacOption] = ListSet(
     privateNoAdaptedArgs,
     privateKindProjector,
+    privateCheckAllPatmat,
     privatePartialUnification
   ) ++ privateWarnOptions
 
