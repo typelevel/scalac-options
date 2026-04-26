@@ -164,7 +164,7 @@ private[scalacoptions] trait ScalacOptions {
   /** Allow higher-kinded types.
     */
   val languageHigherKinds =
-    languageFeatureOption("higherKinds")
+    languageFeatureOption("higherKinds", _ <= V2_13_0)
 
   /** Allow definition of implicit functions called views.
     */
