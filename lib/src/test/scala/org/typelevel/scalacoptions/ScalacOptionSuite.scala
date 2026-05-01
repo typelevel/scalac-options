@@ -216,6 +216,18 @@ class ScalacOptionSuite extends munit.ScalaCheckSuite {
     }
   }
 
+  test("privateCheckAllPatmat is not supported before 3.0.2") {
+    assert(!ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 0, 1)))
+    assert(!ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 0, 0)))
+    assert(!ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(2, 13, 6)))
+  }
+
+  test("privateCheckAllPatmat is supported from 3.0.2") {
+    assert(ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 0, 2)))
+    assert(ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 1, 0)))
+    assert(ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 3, 0)))
+  }
+
   property("ScalacOptions.default should not contain null") {
     forAll(versionGen, versionGen, versionGen) {
       (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
