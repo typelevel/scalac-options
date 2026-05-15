@@ -233,7 +233,9 @@ class ScalacOptionSuite extends munit.ScalaCheckSuite {
     assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(2, 13, 14)))
   }
 
-  test("warnUnusedPatVars is not supported on Scala 3 versions where only the unsafe variant exists") {
+  test(
+    "warnUnusedPatVars is not supported on Scala 3 versions where only the unsafe variant exists"
+  ) {
     assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 0, 0)))
     assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 0)))
     assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 6)))
