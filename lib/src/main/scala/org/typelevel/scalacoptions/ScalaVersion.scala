@@ -51,9 +51,11 @@ object ScalaVersion {
   val V3_3_1   = ScalaVersion(3, 3, 1)
   val V3_3_3   = ScalaVersion(3, 3, 3)
   val V3_3_5   = ScalaVersion(3, 3, 5)
+  val V3_3_7   = ScalaVersion(3, 3, 7)
   val V3_4_0   = ScalaVersion(3, 4, 0)
   val V3_5_0   = ScalaVersion(3, 5, 0)
   val V3_5_2   = ScalaVersion(3, 5, 2)
+  val V3_7_0   = ScalaVersion(3, 7, 0)
   val V3_8_3   = ScalaVersion(3, 8, 3)
 
   private val versionRegex = raw"""(\d+)\.(\d+)\.(\d+)(?:-.*)?""".r

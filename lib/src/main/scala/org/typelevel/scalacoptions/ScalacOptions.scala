@@ -836,9 +836,20 @@ private[scalacoptions] trait ScalacOptions {
     )
 
   /** Warn if a variable bound in a pattern is unused.
+    *
+    * Added in 2.13.0. In Scala 3, only available as the unsafe variant
+    * `-Wunused:unsafe-warn-patvars` until 3.7.0, when it was forward-ported from
+    * Scala 2 as a safe `-Wunused:patvars` ([[https://github.com/scala/scala3/pull/20894]]).
+    * Backported to the 3.3 LTS in 3.3.7 ([[https://github.com/scala/scala3-lts/pull/223]]).
     */
   val warnUnusedPatVars =
-    warnUnusedOption("patvars", version => version.isBetween(V2_13_0, V3_0_0))
+    warnUnusedOption(
+      "patvars",
+      version =>
+        version.isBetween(V2_13_0, V3_0_0) ||
+          version.isBetween(V3_3_7, V3_4_0) ||
+          version.isAtLeast(V3_7_0)
+    )
 
   /** Warn if a private member is unused.
     *

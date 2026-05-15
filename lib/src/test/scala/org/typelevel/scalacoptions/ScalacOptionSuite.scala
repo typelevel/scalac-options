@@ -228,6 +228,29 @@ class ScalacOptionSuite extends munit.ScalaCheckSuite {
     assert(ScalacOptions.privateCheckAllPatmat.isSupported(ScalaVersion(3, 3, 0)))
   }
 
+  test("warnUnusedPatVars is supported on Scala 2.13") {
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(2, 13, 0)))
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(2, 13, 14)))
+  }
+
+  test("warnUnusedPatVars is not supported on Scala 3 versions where only the unsafe variant exists") {
+    assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 0, 0)))
+    assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 0)))
+    assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 6)))
+    assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 4, 0)))
+    assert(!ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 6, 4)))
+  }
+
+  test("warnUnusedPatVars is supported on the 3.3 LTS from 3.3.7") {
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 7)))
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 3, 99)))
+  }
+
+  test("warnUnusedPatVars is supported on Scala 3 from 3.7.0") {
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 7, 0)))
+    assert(ScalacOptions.warnUnusedPatVars.isSupported(ScalaVersion(3, 8, 3)))
+  }
+
   property("ScalacOptions.default should not contain null") {
     forAll(versionGen, versionGen, versionGen) {
       (currentMaj: Long, currentMin: Long, currentPatch: Long) =>
