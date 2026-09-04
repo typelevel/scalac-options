@@ -11,7 +11,7 @@ ThisBuild / developers       := List(
 )
 
 val Scala212 = "2.12.21"
-val Scala213 = "2.13.18"
+val Scala213 = "3.9.0"
 val Scala3   = "3.3.8"
 
 ThisBuild / scalaVersion := Scala212 // The default while sbt is still based on Scala 2.12.x
